@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'optparse'
+require 'switchboard'
+require 'json/ext'
+
+options = { :config_path => "/etc/switchboard/config.yml", :plugin_options => {} }
+
+opts = OptionParser.new do |opts|
+  opts.banner = <<-EOF
+  Usage:
+      notifier [-c <config file>] MESSAGE
+
+  Options:
+  EOF
+
+  opts.on("-cCONFIG", "--config-path CONFIG", "Configuration file path (default /etc/switchboard/config.yml") do |conf|
+    options[:config_path] = conf
+  end
+
+  opts.on("-pPLUGINS", "--plugins PLUGINS", "Comma separated list of plugins to load") do |conf|
+    options[:plugins] = conf.split(",")
+  end
+
+  opts.on("-PPLUGIN_OPTIONS", "--plugin-options PLUGIN_OPTIONS", 
+    "Options to be passed in to plugins (must be in JSON format ie: {\"email\":{\"subject\":\"Hello from switchboard\"}}") do |conf| 
+    options[:plugin_options] = JSON.parse(conf)
+  end
+
+  opts.on("-v", "--version", "Print the version number and exit") do
+    options[:version] = true
+  end
+end
+
+opts.parse!
+
+if options.delete(:version)
+  puts "Switchboard #{Switchboard::VERSION}"
+else
+  if ARGV[0]
+    conf_path = options.delete(:config_path)
+
+    if conf_path.is_a?(String) && File.file?(conf_path)
+      switchboard_options = YAML::load_file(conf_path).merge(options).symbolize_keys
+    else
+      raise ArgumentError.new("Missing config file or bad path")
+    end
+   
+    switchboard_options[:plugin_options] = switchboard_options[:plugins].inject({}) do |hsh, plugin|
+      plugin.downcase!
+      plugin_config_path = File.join(File.dirname(conf_path), "#{plugin}.yml")
+      if File.file?(plugin_config_path)
+        plugin_opts_from_yaml = YAML::load_file(plugin_config_path).symbolize_keys
+        if switchboard_options[:plugin_options].any?
+          plugin_opts_from_cli  = switchboard_options[:plugin_options][plugin.to_sym].symbolize_keys 
+        end
+        if plugin_opts_from_yaml || plugin_opts_from_cli
+          hsh[plugin.to_sym] = plugin_opts_from_yaml.merge(plugin_opts_from_cli || {})
+        end
+      end
+      hsh
+    end  
+
+    Switchboard.new(ARGV[0], switchboard_options)
+    Switchboard.deliver!
+  else
+    raise ArgumentError.new("Missing message to send")
+  end
+end
