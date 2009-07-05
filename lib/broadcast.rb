@@ -1,10 +1,10 @@
 require 'rubygems'
 require 'timeout'
-require 'switchboard/core_ext/string'
-require 'switchboard/core_ext/hash'
-require 'switchboard/plugin'
+require 'broadcast/core_ext/string'
+require 'broadcast/core_ext/hash'
+require 'broadcast/plugin'
 
-module Switchboard
+module Broadcast
   VERSION = '0.0.1'
 
   def self.new(message, config=nil)

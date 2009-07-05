@@ -7,7 +7,7 @@ require 'tlsmail'
 
 Net::SMTP.enable_tls(OpenSSL::SSL::VERIFY_NONE)
 
-module Switchboard
+module Broadcast
   class Plugin
     class Email < Plugin::Base
 

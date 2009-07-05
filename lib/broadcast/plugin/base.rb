@@ -1,4 +1,4 @@
-module Switchboard
+module Broadcast
   class Plugin
     class Base
       attr_reader :message

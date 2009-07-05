@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + "/plugin/base"
 
-module Switchboard
+module Broadcast
   class Plugin
     def self.available
       @@_plugins ||= {}
@@ -19,7 +19,7 @@ module Switchboard
     # Force plugins: manually supplied list to load
     def self.load(config)
       config[:plugins].each do |plugin|
-        require "switchboard/plugin/#{plugin}"
+        require "broadcast/plugin/#{plugin}"
         self.register(self.const_get(plugin.to_class_name))
       end
     end
