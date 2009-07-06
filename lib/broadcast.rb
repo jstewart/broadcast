@@ -7,9 +7,9 @@ require 'broadcast/plugin'
 module Broadcast
   VERSION = '0.0.1'
 
-  def self.new(message, config=nil)
-    self.message = message
-    self.config = config
+  def self.new(message, config={})
+    self.message  = message
+    self.config   = config
     Plugin.load(self.config)
   end
 
@@ -17,7 +17,7 @@ module Broadcast
     @default ||= {
       :plugins          => ['email'],
       :plugin_options   => {},
-      :timeout          => 7
+      :timeout          => 8
     }
   end
 
@@ -37,13 +37,9 @@ module Broadcast
     @message
   end
 
-  def self.plugin_config
-    @plugin_config || {}
-  end
-
   def self.deliver!
     raise ArgumentError.new("No message to send") unless self.message
-    Plugin.available.each do |plugin_name, plugin_class| 
+    Plugin.available.each do |plugin_name, plugin_class|
       begin
         Timeout.timeout(self.config[:timeout]) { 
           plugin_class.new(self.message, config[:plugin_options][plugin_name]).deliver! 
