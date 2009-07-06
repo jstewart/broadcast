@@ -10,7 +10,7 @@ options = { :config_path => "/etc/broadcast/config.yml", :plugin_options => {} }
 opts = OptionParser.new do |opts|
   opts.banner = <<-EOF
   Usage:
-      notifier [-c <config file>] MESSAGE
+      broadcast [-c <config file>] MESSAGE
 
   Options:
   EOF
