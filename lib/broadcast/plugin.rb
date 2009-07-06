@@ -16,7 +16,6 @@ module Broadcast
       plugin != Plugin::Base
     end
 
-    # Force plugins: manually supplied list to load
     def self.load(config)
       config[:plugins].each do |plugin|
         require "broadcast/plugin/#{plugin}"
