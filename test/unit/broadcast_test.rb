@@ -101,7 +101,23 @@ class BroadcastTest < Test::Unit::TestCase
       Broadcast.deliver!
     end
 
-    should_eventually "Timeout if maximum time for execution expires"
+    context "timing out" do
+      should "use the timeout value from the config hash if available" do
+        Broadcast.stubs(:config).returns({:timeout => 3, :plugin_options => {}})
+        Timeout.expects(:timeout).with(3)
+        Broadcast.deliver!
+      end
 
+      should "use a default timeout value of 8 if none available in the config hash" do
+        Timeout.expects(:timeout).with(8)
+        Broadcast.deliver!
+      end
+
+      should "print a delivery failure message out to STDERR output stream" do
+        Timeout.expects(:timeout).raises(Timeout::Error)
+        STDERR.expects(:puts).with("DELIVERY FAILURE: email exceeded maximum timeout of 8 seconds")
+        Broadcast.deliver!
+      end
+    end
   end
 end

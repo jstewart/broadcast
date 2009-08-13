@@ -39,13 +39,16 @@ module Broadcast
 
   def self.deliver!
     raise ArgumentError.new("No message to send") unless self.message
+
+    timeout_sec = self.config[:timeout] || 8
+
     Plugin.available.each do |plugin_name, plugin_class|
       begin
-        Timeout.timeout(self.config[:timeout]) { 
+        Timeout.timeout(timeout_sec) { 
           plugin_class.new(self.message, config[:plugin_options][plugin_name]).deliver! 
         }
       rescue Timeout::Error
-        STDERR.puts "DELIVERY FAILURE: #{plugin_name} exceeded maximum timeout of #{self.config[:timeout]} seconds"
+        STDERR.puts "DELIVERY FAILURE: #{plugin_name} exceeded maximum timeout of #{timeout_sec} seconds"
       end
     end
   end
