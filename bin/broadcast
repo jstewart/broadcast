@@ -2,8 +2,8 @@
 
 require 'rubygems'
 require 'optparse'
+require 'json'
 require 'broadcast'
-require 'json/ext'
 
 options = { :config_path => "/etc/broadcast/config.yml", :plugin_options => {} }
 
@@ -15,7 +15,7 @@ opts = OptionParser.new do |opts|
   Options:
   EOF
 
-  opts.on("-cCONFIG", "--config-path CONFIG", "Configuration file path (default /etc/broadcast/config.yml") do |conf|
+  opts.on("-cCONFIG", "--config-path CONFIG", "Configuration file (default /etc/broadcast/config.yml") do |conf|
     options[:config_path] = conf
   end
 

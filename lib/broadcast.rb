@@ -3,6 +3,7 @@ require 'timeout'
 require 'broadcast/core_ext/string'
 require 'broadcast/core_ext/hash'
 require 'broadcast/plugin'
+
 require 'broadcast/plugin/email'
 
 module Broadcast
