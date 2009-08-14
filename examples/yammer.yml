@@ -1,0 +1,2 @@
+# Location of yammer4r oauth yaml file.
+oauth_yml: "/etc/broadcast/yammer_oauth.yml"
