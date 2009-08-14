@@ -42,7 +42,7 @@ else
     conf_path = options.delete(:config_path)
 
     if conf_path.is_a?(String) && File.file?(conf_path)
-      broadcast_options = YAML::load_file(conf_path).merge(options).symbolize_keys
+      broadcast_options = YAML::load_file(conf_path).merge(options).keys_to_sym
     else
       raise ArgumentError.new("Missing config file or bad path")
     end
@@ -51,9 +51,9 @@ else
       plugin.downcase!
       plugin_config_path = File.join(File.dirname(conf_path), "#{plugin}.yml")
       if File.file?(plugin_config_path)
-        plugin_opts_from_yaml = YAML::load_file(plugin_config_path).symbolize_keys
+        plugin_opts_from_yaml = YAML::load_file(plugin_config_path).keys_to_sym
         if broadcast_options[:plugin_options].any?
-          plugin_opts_from_cli  = broadcast_options[:plugin_options][plugin.to_sym].symbolize_keys 
+          plugin_opts_from_cli  = broadcast_options[:plugin_options][plugin.to_sym].keys_to_sym 
         end
         if plugin_opts_from_yaml || plugin_opts_from_cli
           hsh[plugin.to_sym] = plugin_opts_from_yaml.merge(plugin_opts_from_cli || {})
