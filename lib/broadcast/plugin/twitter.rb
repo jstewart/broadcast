@@ -6,7 +6,8 @@ module Broadcast
       def initialize(message, config)
         @config         = config
         @message        = message
-        @twitter_client = ::Twitter::Base.new(@config[:email], @config[:password]) 
+        auth            = ::Twitter::HTTPAuth.new(@config[:username], @config[:password])
+        @twitter_client = ::Twitter::Base.new(auth) 
       end
 
       def deliver!

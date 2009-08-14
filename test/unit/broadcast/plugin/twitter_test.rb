@@ -4,17 +4,20 @@ class Broadcast::Plugin::TwitterTest < Test::Unit::TestCase
   def setup 
     @twitter_client   = stub_everything
     @config           = {
-      :email => 'jstew1974@example.com',
+      :username => 'jstew1974',
       :password => 'xxx',
       :direct_message => true,
       :dm_to => ['jstew1974'], 
     }
-    Twitter::Base.stubs(:new).with('jstew1974@example.com', 'xxx').returns(@twitter_client)
+    @auth = stub_everything
+    Twitter::HTTPAuth.stubs(:new).with('jstew1974', 'xxx').returns(@auth)
+    Twitter::Base.stubs(:new).with(@auth).returns(@twitter_client)
   end
 
   context "initiliazing new instance" do
     should "create a new twitter client with the correct options" do
-      Twitter::Base.expects(:new).with('jstew1974@example.com', 'xxx')
+      Twitter::HTTPAuth.expects(:new).with('jstew1974', 'xxx').returns(@auth)
+      Twitter::Base.expects(:new).with(@auth).returns(@twitter_client)
       Broadcast::Plugin::Twitter.new("TEST", @config)
     end
   end
