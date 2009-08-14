@@ -31,7 +31,7 @@ class Broadcast::Plugin::TwitterTest < Test::Unit::TestCase
 
     should "post a tweet when the :direct_message config option is not set" do
       @config[:direct_message] = false
-      @twitter_client.expects(:post).with("TEST")
+      @twitter_client.expects(:update).with("TEST")
       Broadcast::Plugin::Twitter.new("TEST", @config).deliver!
     end
 

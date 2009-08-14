@@ -14,7 +14,7 @@ module Broadcast
         if @config[:direct_message]
           @config[:dm_to].each { |user| @twitter_client.direct_message_create(user, @message) }
         else
-          @twitter_client.post(@message)
+          @twitter_client.update(@message)
         end
       end
     end
