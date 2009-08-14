@@ -10,4 +10,14 @@ class StringTest < Test::Unit::TestCase
       assert_equal "MyClass", @s.to_class_name
     end
   end
+
+  context "#to_plugin_name" do
+    setup do
+      @s = "MyClass"
+    end
+
+    should "convert a camel case class name to an underscored lower case string" do
+      assert_equal "my_class", @s.to_plugin_name
+    end
+  end
 end

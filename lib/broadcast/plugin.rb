@@ -9,7 +9,7 @@ module Broadcast
 
     def self.register(klass)
       raise ArgumentError.new("Invalid plugin") unless valid_plugin?(klass)
-      available[klass.to_s.split(":").last.downcase.to_sym] = klass
+      available[klass.to_s.split(":").last.to_plugin_name.to_sym] = klass
     end
 
     def self.valid_plugin?(plugin)
@@ -18,7 +18,6 @@ module Broadcast
 
     def self.load(config)
       config[:plugins].each do |plugin|
-        require "broadcast/plugin/#{plugin}"
         self.register(self.const_get(plugin.to_class_name))
       end
     end

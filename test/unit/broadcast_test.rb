@@ -101,7 +101,7 @@ class BroadcastTest < Test::Unit::TestCase
       Broadcast.deliver!
     end
 
-    context "timing out" do
+    context "when timing out" do
       should "use the timeout value from the config hash if available" do
         Broadcast.stubs(:config).returns({:timeout => 3, :plugin_options => {}})
         Timeout.expects(:timeout).with(3)
