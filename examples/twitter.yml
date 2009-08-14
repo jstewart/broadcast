@@ -1,0 +1,5 @@
+user: 'jstew1974@example.com'
+password: 'xxx'
+direct_message: true
+dm_to: 
+  - 'jstew1974'
