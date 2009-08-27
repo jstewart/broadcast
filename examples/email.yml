@@ -1,6 +1,6 @@
 from: switchboard@example.com
 recipients: jstewart@fusionary.com
-subject: Hello from Switchboard
+subject: Hello from Broadcast
 
 # Mailer Configuration
 

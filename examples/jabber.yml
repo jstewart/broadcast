@@ -1,0 +1,7 @@
+recipients: 
+  - jstewart@fusionary.com
+  - some_other_recip
+host: localhost
+port: 5222
+user: me
+pass: mypass

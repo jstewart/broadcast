@@ -7,6 +7,7 @@ require 'broadcast/plugin'
 require 'broadcast/plugin/email'
 require 'broadcast/plugin/yammer'
 require 'broadcast/plugin/twitter'
+require 'broadcast/plugin/jabber'
 
 module Broadcast
   VERSION = '0.0.1'
