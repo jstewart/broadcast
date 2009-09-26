@@ -1,14 +1,14 @@
 from: switchboard@example.com
-recipients: jstewart@fusionary.com
+to: jstewart@fusionary.com
 subject: Hello from Broadcast
 
-# Mailer Configuration
-
-host: localhost
-port: 25
-#user: 
-#pass: 
-# plain, login, cram_md5, the default is no auth (disabled)
-#auth: plain 
-# the HELO domain provided by the client to the server 
-domain: localhost.localdomain
+sendmail: true
+smtp:
+  host: localhost
+  port: 25
+  #user: 
+  #pass: 
+  # plain, login, cram_md5, the default is no auth (disabled)
+  #auth: plain 
+  # the HELO domain provided by the client to the server 
+  domain: localhost.localdomain
